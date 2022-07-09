@@ -33,8 +33,8 @@ public class DataLoader implements ApplicationRunner {
             repo.save(new Ingredient("6", "Salată", TYPE_LEGUME));
             repo.save(new Ingredient("7", "Telemea", TYPE_BRÂNZĂ));
             repo.save(new Ingredient("8", "Cașcaval", TYPE_BRÂNZĂ));
-            repo.save(new Ingredient("9", "Mare", TYPE_CHIFLĂ));
-            repo.save(new Ingredient("10", "Mică", TYPE_CHIFLĂ));
+            repo.save(new Ingredient("9", "Chiflă Mare", TYPE_CHIFLĂ));
+            repo.save(new Ingredient("10", "Chiflă Mică", TYPE_CHIFLĂ));
         }
     }
 }
