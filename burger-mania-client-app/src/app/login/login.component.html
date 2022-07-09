@@ -1,0 +1,43 @@
+<cloud-title>Conectează-te la Burger Mania!</cloud-title>
+
+<group-box title="Conectare">
+  <form (ngSubmit)="login()">
+    <label for="username"><b>Nume utilizator:</b></label><br/>
+    <input [(ngModel)]="user.username" name="username" class="formField"><br/>
+    <label for="password"><b>Parola:</b></label><br/>
+    <input type="password" [(ngModel)]="user.password" name="password" class="formField"/><br/><br/>
+    <big-button label="Conectare"></big-button>
+    <p>{{messagel}}</p>
+  </form>
+</group-box>
+
+<group-box title="Înregistrare">
+  <form (submit)="register()">
+    <label for="username"><b>Nume utilizator:</b></label><br/>
+    <input [(ngModel)]="newUser.username" type="text" name="username" class="formField"/><br/>
+    <label for="password"><b>Parola:</b></label><br/>
+    <input [(ngModel)]="newUser.password" type="password" name="password" class="formField"/><br/><br/>
+    <!--
+    <label for="password"><b>(verify password)</b></label><br/>
+    <input [(ngModel)]="newUser.verifyPassword" type="password" name="verifyPassword" class="formField"/><br/><br/>
+    -->
+    <label for="fullName"><b>Nume complet:</b></label><br/>
+    <input [(ngModel)]="newUser.fullname" type="text" name="fullName" class="formField"/><br/><br/>
+
+    <label for="street"><b>Strada:</b></label><br/>
+    <input [(ngModel)]="newUser.street" type="text" name="street" class="formField"/><br/><br/>
+
+    <label for="city"><b>Oraș / Țară:</b></label><br/>
+    <input [(ngModel)]="newUser.city" type="text" name="city" class="formField"/><input [(ngModel)]="newUser.state" type="text" name="state" class="formField"/><br/><br/>
+
+    <label for="zipCode"><b>Cod poștal:</b></label><br/>
+    <input [(ngModel)]="newUser.zip" type="text" size="2" name="zipCode" class="formField"/><br/><br/>
+
+    <label for="phoneNumber"><b>Număr tel.:</b></label><br/>
+    <input [(ngModel)]="newUser.phone" type="text" name="phoneNumber" class="formField"/><br/><br/>
+
+
+    <big-button label="Înregistrare"></big-button>
+    <p>{{messager}}</p>
+  </form>
+</group-box>

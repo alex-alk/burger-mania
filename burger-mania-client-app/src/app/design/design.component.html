@@ -1,0 +1,42 @@
+<cloud-title>Creează-ți burgerul favorit!</cloud-title>
+
+<p>Noi vă oferim o paletă de ingrediente proaspete...tu ne oferi inspirația!
+   Selectează ingredientele care se vor combina în capodopera ta de maestru al burgerilor.</p>
+
+<form (ngSubmit)="onSubmit()">
+  <div class="ingredientsblock" style="text-align: center; width: 100%;">
+    <group-box title="Alege chifla">
+      <span *ngFor="let wrap of wraps">
+        <input type="checkbox" (change)="updateIngredients(wrap, $event)" name="ingredients" value="{{wrap.id}}"/>{{wrap.name}}<br/>
+      </span>
+    </group-box>
+    <group-box title="Alege carnea">
+      <span *ngFor="let protein of proteins">
+        <input type="checkbox" (change)="updateIngredients(protein, $event)" name="ingredients" value="{{protein.id}}"/>{{protein.name}}<br/>
+      </span>
+    </group-box>
+    <group-box title="Alege brânza">
+      <span *ngFor="let cheese of cheeses">
+        <input type="checkbox" (change)="updateIngredients(cheese, $event)" name="ingredients" value="{{cheese.id}}"/>{{cheese.name}}<br/>
+      </span>
+    </group-box>
+    <group-box title="Alege legumele">
+      <span *ngFor="let veggie of veggies">
+        <input type="checkbox" (change)="updateIngredients(veggie, $event)" name="ingredients" value="{{veggie.id}}"/>{{veggie.name}}<br/>
+      </span>
+    </group-box>
+    <group-box title="Alege sosul">
+      <span *ngFor="let sauce of sauces">
+        <input type="checkbox" (change)="updateIngredients(sauce, $event)" name="ingredients" value="{{sauce.id}}"/>{{sauce.name}}<br/>
+      </span>
+    </group-box>
+    <group-box title="Numele creației">
+      Numele burgerului: <br/>
+      <input type="text" [(ngModel)]="model.name" name="name" class="nameField"/>
+    </group-box>
+  </div>
+
+  <div style="text-align:center; width:100%;">
+    <big-button label="Creează acest burger"></big-button>
+  </div>
+</form>

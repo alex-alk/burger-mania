@@ -1,0 +1,115 @@
+<cloud-title>Comandă-ți burgerul creat!</cloud-title>
+
+<p>Ai creat burgeri care îți lasă gura apă. Acum, imaginează-ți aceste
+   creații apărând în fața ta, acasă...sau la muncă..sau oriunde te afli!</p>
+
+<p *ngIf="(cartItems.length == 0)"><b>Nu sunt burgeri în coșul de cumpărături.
+  <a [routerLink]="['../design']">Creează unul</a> sau alege un 
+  <a [routerLink]="['../recente']">burger</a> creat recent.</b></p>
+
+<div *ngIf="(cartItems.length > 0)">
+<p>Aici sunt burgerii tăi. Trebuie doar să spui cuvântul și noi
+   ți-i vom trimite pe un nor către tine!</p>
+
+    <div class="groupBox groupBoxFull">
+      <div class="groupBoxTitle">Aici sunt burgerii mei...</div>
+      <div class="groupBoxContent">
+        <table border="1" width="90%">
+          <thead>
+            <tr>
+              <td>Cant.</td>
+              <td>Nume</td>
+              <td>Descriere</td>
+              <td>Preț</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems">
+              <td>
+                <select [(ngModel)]="item.quantity" (change) = "setqq()">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </td>
+              <td>"<span class="caps">{{item.burger.name}}</span>"</td>
+              <td>
+                <ul class="commalist">
+                  <li *ngFor="let ingredient of item.burger.ingredients | nonwraps">{{ingredient.name}}</li>
+                </ul>
+                <span *ngIf="(item.burger.ingredients | wraps)?.length > 0">
+                    <span> într-o </span>
+                  <ul class="commalist">
+                      <li *ngFor="let ingredient of item.burger.ingredients | wraps">{{ingredient.name}}</li>
+                  </ul>
+                </span>
+                <span *ngIf="(item.burger.ingredients | wraps)?.length == 0"> la farfurie</span>
+                </td>
+              <td align="right">{{4.99 * item.quantity | currency}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" align="right">Total:</td>
+              <td align="right"><span>{{getCartTotal() | currency}}</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="groupBox groupBoxHalf">
+        <div class="groupBoxTitle">Livrează către...</div>
+        <div class="groupBoxContent">
+          <label for="deliveryName">Nume: </label>
+          <input type="text" [(ngModel)]="model.deliveryName" name="deliveryName" size="20"/>
+          <br/>
+
+          <label for="deliveryStreet">Strada: </label>
+          <input type="text" [(ngModel)]="model.deliveryStreet" name="deliveryStreet" size="20"/>
+          <br/>
+
+          <label for="deliveryCity">Oraș / Țara: </label>
+          <input type="text" [(ngModel)]="model.deliveryCity" name="deliveryCity" size="20"/>
+          <select [(ngModel)]="model.deliveryState" name="deliveryState">
+            <option value="">--</option>
+            <option value="RO">RO</option>
+            <option value="GB">GB</option>
+            <option value="IT">IT</option>
+          </select>
+          <br/>
+
+          <label for="deliveryZip">Cod poștal: </label>
+          <input type="text" [(ngModel)]="model.deliveryZip" name="deliveryZip"/>
+        </div>
+      </div>
+
+      <div class="groupBox groupBoxHalf">
+        <div class="groupBoxTitle">Voi plăti cu...</div>
+        <div class="groupBoxContent">
+          <label for="ccNumber">Card #: </label>
+          <input type="text" [(ngModel)]="model.ccNumber" name="ccNumber"/>
+          <br/>
+
+          <label for="ccExpiration">Data exp. / CVV: </label>
+          <input type="text" [(ngModel)]="model.ccExpiration" name="ccExpiration"/>
+          <input type="text" [(ngModel)]="model.ccCVV" name="ccCVV" size="4"/>
+        </div>
+      </div>
+
+      <br/>
+
+      <big-button label="Trimite comanda"></big-button>
+      <p>{{message}}</p>
+      <!-- <input type="submit" value="Submit order"/> -->
+    </form>
+</div>

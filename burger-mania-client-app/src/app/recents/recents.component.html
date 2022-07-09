@@ -1,0 +1,24 @@
+<cloud-title>Admiră cei mai recenți burgeri creați!</cloud-title>
+
+<p>Chiar și cei mai mari artiști trebuie să se inspire uneori din munca altora.
+  Aici sunt câțiva dintre cei mai recenți burgeri, creați de maeștrii ai burgerilor ca și tine...</p>
+
+<div class="recentsblock">
+  <div class="tacoblock" *ngFor="let burger of recentBurgers">
+    <form (ngSubmit)="orderThis(burger.link)">
+      <div class="tacoName"><span class="small"></span><br/>"{{burger.name}}"</div>
+      <div class="tacoDesc">
+        <ul class="commalist">
+          <li *ngFor="let ingredient of burger.ingredients | nonwraps">{{ingredient.name}}</li>
+        </ul>
+        <div *ngIf="(burger.ingredients | wraps)?.length > 0">
+        <span>în </span><ul class="commalist">
+            <li *ngFor="let ingredient of burger.ingredients | wraps">{{ingredient.name}}</li>
+        </ul>
+        </div>
+        <div *ngIf="(burger.ingredients | wraps)?.length == 0">la farfurie</div>
+      </div>
+      <little-button label="Comandă acest burger"></little-button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="header">
+  <div class="logo"><a routerLink="/home"><img src="assets/BurgerCloud.png" title="home"></a></div>
+  <div class="topbar">
+    <div class="topbaritems">
+      <div class="topbaritem" style="font-size: 14pt;">
+        <a routerLink="/design" class="plainlink caps">Creează un burger</a>
+      </div>
+      <div class="topbaritem">
+        <a routerLink="/login" class="plainlink">
+          <span class="caps small">Înregistrare</span><br/>
+          <span class="smaller">sau Creare Cont</span>
+        </a>
+      </div>
+      <div class="topbaritem" style="font-size: 14pt;">
+        <a routerLink="/cos" class="plainlink">
+          <img src="assets/cart.png" align="center" />
+            {{cart.getCartTotal() | currency}}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="bottombar">
+    <div class="bottombaritems">
+      <div class="bottombaritem">
+        <a routerLink="/recente" class="plainlink">Creații recente</a>
+      </div>
+      <div class="bottombaritem">
+        <a routerLink="/specialitati" class="plainlink">Burgerii mei</a>
+      </div>
+      <div class="bottombaritem">
+        <a routerLink="/locatii" class="plainlink">Locații</a>
+      </div>
+    </div>
+  </div>
+</div>
