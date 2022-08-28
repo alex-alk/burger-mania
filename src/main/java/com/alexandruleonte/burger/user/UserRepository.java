@@ -1,7 +1,9 @@
 package com.alexandruleonte.burger.user;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+@RepositoryRestResource(exported=false)
+public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUsernameAndPassword(String username, String password);
 }

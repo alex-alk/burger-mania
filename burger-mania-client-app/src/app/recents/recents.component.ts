@@ -16,7 +16,7 @@ import { Globals } from '../globals';
 
 @Injectable()
 export class RecentsComponent implements OnInit {
-  
+
   recentBurgers : Burger[]= [];
   burger: Burger = {
     name:'',
@@ -24,17 +24,17 @@ export class RecentsComponent implements OnInit {
     link: ''
   }
   globals: Globals;
-    
-  constructor(private httpClient: HttpClient, private cart: CartService, private router: Router) { 
+
+  constructor(private httpClient: HttpClient, private cart: CartService, private router: Router) {
     this.globals = new Globals();
   }
 
   ngOnInit() {
     this.recentBurgers = this.getRecentBurgers();
   }
-  
+
   getRecentBurgers(){
-    this.httpClient.get<Burger[]>(this.globals.apiURL + '/burgers?size=12&sort=createdAt,desc').subscribe((result:any)=>{ 
+    this.httpClient.get<Burger[]>(this.globals.apiURL + '/burgers?size=12&sort=createdAt,desc').subscribe((result:any)=>{
         let burgers = result._embedded.burgers;
         for(let burger of burgers){
           this.burger.name = burger.name;
@@ -43,17 +43,17 @@ export class RecentsComponent implements OnInit {
                this.burger.ingredients = ingdata._embedded.ingredients;
                this.recentBurgers.push(new Burger(burger.name, this.burger.ingredients, burger._links.self.href));
           });
-          
+
         }
      });
-        
+
       return this.recentBurgers;
   }
-  
+
   public getR<T>(link: string) {
         return this.httpClient.get<T>(link);
   }
-  
+
   orderThis(link: string) {
     if(!sessionStorage.getItem('user')){
       this.router.navigate(['/login']);
