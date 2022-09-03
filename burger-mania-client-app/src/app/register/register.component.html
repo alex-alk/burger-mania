@@ -1,0 +1,24 @@
+<header-title>Conectează-te la Burger Mania!</header-title>
+
+<group-box title="Înregistrare" class="flex-center">
+  <form [formGroup]="newUserForm">
+    <label for="username"><b>Nume utilizator:</b></label><br/>
+    <input formControlName="username" type="text" name="username" class="formField"/><br/>
+
+    <label for="email"><b>Email:</b></label><br/>
+    <input formControlName="email" type="email" name="email" class="formField"/><br/>
+
+    <label for="password"><b>Parola:</b></label><br/>
+    <input formControlName="password" type="password" name="password" class="formField"/><br/><br/>
+    
+    <label for="password"><b>Verificare parolă</b></label><br/>
+    <input formControlName="verifyPassword" type="password" name="verifyPassword" class="formField"/><br/><br/>
+
+    <label for="phoneNumber"><b>Număr telefon:</b></label><br/>
+    <input formControlName="phone" type="text" name="phoneNumber" class="formField"/><br/><br/>
+
+
+    <big-button (click)="onClickSignup()" label="Înregistrare"></big-button>
+    <p>{{messager}}</p>
+  </form>
+</group-box>
