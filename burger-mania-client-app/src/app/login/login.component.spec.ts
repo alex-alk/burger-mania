@@ -1,4 +1,7 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { LoginComponent } from './login.component';
 
@@ -8,7 +11,9 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
+      declarations: [ LoginComponent ],
+      providers: [HttpClient, HttpHandler],
+      imports: [RouterTestingModule],
     })
     .compileComponents();
   }));
@@ -20,6 +25,8 @@ describe('LoginComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    //const header: HTMLElement = fixture.nativeElement.querySelector('h2');
+    //expect(header.textContent).toEqual('Conectează-te la Burger Mania!');
   });
 });
+

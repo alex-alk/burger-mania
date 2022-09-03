@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from './user';
-import { NewUser } from './NewUser';
+import { User } from '../model/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Globals } from '../globals';
@@ -20,16 +19,7 @@ export class LoginComponent implements OnInit {
   globals: Globals;
   messagel: string = "";
   messager: string = "";
-  newUser: NewUser = {
-    username: '',
-    password: '',
-    fullname: '',
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    phone: ''
-  }
+
   constructor( private http: HttpClient, private router: Router) { 
     this.globals = new Globals();}
   
@@ -53,26 +43,4 @@ export class LoginComponent implements OnInit {
        if(!auth)this.messagel = 'Nume utilizator/parola greșite.';
      }, 4000);
   }
-  
-  register(){
-    if(!(this.newUser.username &&
-       this.newUser.password &&
-       this.newUser.fullname &&
-       this.newUser.street &&
-       this.newUser.city &&
-       this.newUser.state &&
-       this.newUser.zip &&
-       this.newUser.phone) ){
-         this.messager = 'Toate câmpurile sunt obligatorii!';
-     }else{
-         this.http.post(
-            this.globals.usersURL,
-            this.newUser, {
-                headers: new HttpHeaders().set('Content-type', 'application/json'),
-            }).subscribe(burger => console.log('-------added to db--------'));
-        this.router.navigate(['/regok']);
-      }
-  }
-    
-
 }

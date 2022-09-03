@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.ml-1 {
+    margin-left: 1em;
+}
+.color-dark {
+    color: #003366;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+}

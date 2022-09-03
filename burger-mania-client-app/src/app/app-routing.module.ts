@@ -11,6 +11,7 @@ import { SuccessComponent } from './success/success.component';
 import { LoginokComponent } from './loginok/loginok.component';
 import { RegokComponent } from './regok/regok.component';
 import { OrderokComponent } from './orderok/orderok.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'locatii', component: LocationsComponent },
   { path: 'cos', component: CartComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'succes', component: SuccessComponent },
   { path: 'loginok', component: LoginokComponent },
   { path: 'regok', component: RegokComponent },

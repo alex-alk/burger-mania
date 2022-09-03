@@ -1,10 +1,10 @@
-<cloud-title>Comandă-ți burgerul creat!</cloud-title>
+<header-title>Comandă-ți burgerul creat!</header-title>
 
 <p>Ai creat burgeri care îți lasă gura apă. Acum, imaginează-ți aceste
    creații apărând în fața ta, acasă...sau la muncă..sau oriunde te afli!</p>
 
 <p *ngIf="(cartItems.length == 0)"><b>Nu sunt burgeri în coșul de cumpărături.
-  <a [routerLink]="['../design']">Creează unul</a> sau alege un 
+  <a [routerLink]="['../design']">Creează unul</a> sau alege un
   <a [routerLink]="['../recente']">burger</a> creat recent.</b></p>
 
 <div *ngIf="(cartItems.length > 0)">

@@ -1,4 +1,7 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { SpecialsComponent } from './specials.component';
 
@@ -8,7 +11,9 @@ describe('SpecialsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpecialsComponent ]
+      declarations: [ SpecialsComponent ],
+      providers: [HttpClient, HttpHandler],
+      imports: [RouterTestingModule],
     })
     .compileComponents();
   }));
@@ -19,7 +24,5 @@ describe('SpecialsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+
 });

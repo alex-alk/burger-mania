@@ -9,10 +9,10 @@ import { HttpClientModule} from '@angular/common/http';
 import { DesignComponent } from './design/design.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { CloudtitleComponent } from './cloudtitle/cloudtitle.component';
+import {  HeaderTitleComponent } from './headertitle/header-title.component';
 import { GroupBoxComponent } from './group-box/group-box.component';
 import { CartComponent } from './cart/cart.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BigButtonComponent } from './big-button/big-button.component';
 import { NonWrapsPipe } from './recents/NonWrapsPipe';
 import { WrapsPipe } from './recents/WrapsPipe';
@@ -25,6 +25,7 @@ import { SuccessComponent } from './success/success.component';
 import { LoginokComponent } from './loginok/loginok.component';
 import { RegokComponent } from './regok/regok.component';
 import { OrderokComponent } from './orderok/orderok.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { OrderokComponent } from './orderok/orderok.component';
     DesignComponent,
     HeaderComponent,
     HomeComponent,
-    CloudtitleComponent,
+    HeaderTitleComponent,
     GroupBoxComponent,
     CartComponent,
     BigButtonComponent,
@@ -47,13 +48,15 @@ import { OrderokComponent } from './orderok/orderok.component';
     SuccessComponent,
     LoginokComponent,
     RegokComponent,
-    OrderokComponent
+    OrderokComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
