@@ -17,8 +17,7 @@
     <label for="phoneNumber"><b>Număr telefon:</b></label><br/>
     <input formControlName="phone" type="text" name="phoneNumber" class="formField"/><br/><br/>
 
-
-    <big-button (click)="onClickSignup()" label="Înregistrare"></big-button>
+    <big-button (click)="onClickSignup()" label="Înregistrare" [disabled]="pendingApiCall" [displaySpinner]="pendingApiCall"></big-button>
     <p>{{messager}}</p>
   </form>
 </group-box>

@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
 .ml-1 {
     margin-left: 1em;
 }

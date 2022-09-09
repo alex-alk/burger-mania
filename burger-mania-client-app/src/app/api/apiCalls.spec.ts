@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
-import { ApiServiceService } from './api-service.service';
+import { ApiCalls } from './apiCalls';
 
 describe('ApiServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -9,7 +9,7 @@ describe('ApiServiceService', () => {
   }));
 
   it('should be created', () => {
-    const service: ApiServiceService = TestBed.get(ApiServiceService);
+    const service: ApiCalls = TestBed.get(ApiCalls);
     expect(service).toBeTruthy();
   });
 });

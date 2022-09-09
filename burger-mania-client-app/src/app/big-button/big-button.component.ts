@@ -7,7 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BigButtonComponent implements OnInit {
   
-  @Input() label: String = ""
+  @Input() label: String = "";
+  @Input() disabled: boolean = false;
+  @Input() displaySpinner: boolean = false;
   
   constructor() { }
 

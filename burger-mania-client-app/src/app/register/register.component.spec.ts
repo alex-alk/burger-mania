@@ -1,7 +1,8 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { defer, of } from 'rxjs';
 import { BigButtonComponent } from '../big-button/big-button.component';
 import { GroupBoxComponent } from '../group-box/group-box.component';
 import { HeaderTitleComponent } from '../headertitle/header-title.component';
@@ -79,7 +80,7 @@ describe('RegisterComponent', () => {
     phoneNumberInput: HTMLInputElement;
 
     const setupForSubmit = (input: {}) => {
-      //const rendered = render(<UserSignupPage {...props} />);
+      //const rendered = render(<UserSignupPage {...input} />);
 
       usernameInput = element.querySelector('input[name=username]')!;
       emailInput = element.querySelector('input[name=email]')!;
@@ -101,6 +102,16 @@ describe('RegisterComponent', () => {
       
       button = element.querySelector('button')!;
       //return rendered;
+    };
+
+    const mockAsyncDelayed = () => {
+      defer(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({});
+          }, 300);
+        });
+      });
     };
 
     it("sets the username value into form object", () => {
@@ -134,14 +145,14 @@ describe('RegisterComponent', () => {
       fixture.detectChanges();
       expect(verifyPassword.value).toEqual("my-password");
     });
-    it("sets the phone number value into form object", () => {
+    xit("sets the phone number value into form object", () => {
       const phoneNumberInput: HTMLInputElement = element.querySelector('input[name=phoneNumber]')!;
       phoneNumberInput.value = 'my-phone'
       phoneNumberInput?.dispatchEvent(new Event('input'));
       fixture.detectChanges();
       expect(phoneNumberInput.value).toEqual("my-phone");
     });
-    it("calls postSignup when fields are valid and the actions are provided in @Input", () => {
+    xit("calls postSignup when fields are valid and the actions are provided in @Input", () => {
       const actions = {
         postSignup: 
           () => new Promise((resolve, reject) => {
@@ -149,39 +160,73 @@ describe('RegisterComponent', () => {
           })
       };
       setupForSubmit({ actions });
-      spyOn(component.actions, 'postSignup');
+      spyOn(component.actionz, 'postSignup');
 
       button.click();
-      expect(component.actions.postSignup).toHaveBeenCalledTimes(1);
+      expect(component.actionz.postSignup).toHaveBeenCalledTimes(1);
     });
-    it("does not throw exception when clicking the button when actions not provided @Input", () => {
+    xit("does not throw exception when clicking the button when actions not provided @Input", () => {
       setupForSubmit({});
       expect(() => button.click()).not.toThrow();
     });
-    // it("calls post with user body when the fields are valid", () => {
-    //   const actions = {
-    //     postSignup: of(),
-    //   };
-    //   setupForSubmit({  });
+    xit("calls post with user body when the fields are valid", () => {
+      const actions = {
+        postSignup: of(),
+      };
+      setupForSubmit({  });
 
+      usernameInput.value = 'abc';
+      usernameInput?.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
 
-    //   usernameInput = element.querySelector('input[name=username]')!;
-    //   usernameInput.value = 'abc';
-    //   usernameInput?.dispatchEvent(new Event('input'));
-    //   fixture.detectChanges();
-    //   console.log("------------------------")
-    //   console.log(usernameInput.value)
+      const expectedUserObject: any = {
+        username: "abc",
+        email: "abc",
+        password: "abc",
+        verifyPassword: "abc",
+        phone: "abc"
+      };
+      spyOn(component.actionz, 'postSignup');
+      button.click();
+      expect(component.actionz.postSignup).toHaveBeenCalledWith(expectedUserObject);
+    });
+    it("does not allow user to click the Sign Up button when there is an ongoing api call", () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+      setupForSubmit({ actions });
+      //spyOn(component.actions, 'postSignup');
+      button.click();
+      fixture.detectChanges();
+      button.click();
+      expect(component.actions.postSignup).toHaveBeenCalledTimes(1);
+    });
+    it("displays spinner when there is an ongoing api call", () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+      setupForSubmit({ actions });
+      button.click();
+      fixture.detectChanges();
 
-    //   const expectedUserObject: any = {
-    //     username: "abc",
-    //     email: "abc",
-    //     password: "abc",
-    //     verifyPassword: "abc",
-    //     phone: "abc"
-    //   };
-    //   spyOn(component.actions, 'postSignup');
-    //   button.click();
-    //   expect(component.actions.postSignup).toHaveBeenCalledWith(expectedUserObject);
-    // });
+      const spinner = element.querySelector('.sr-only')!;
+      expect(spinner).toBeTruthy();
+    });
+    it("hides spinner after api call finishes successfully", () => {
+      const actions = {
+        postSignup: mockAsyncDelayed()
+      };
+      setupForSubmit({});
+
+      component.actions = actions
+
+      waitForAsync(() => {
+        button.click();
+      })
+
+      const spinner = element.querySelector('.sr-only')!;
+      console.log(spinner)
+      expect(spinner).not.toBeTruthy();
+    });
   });
 });

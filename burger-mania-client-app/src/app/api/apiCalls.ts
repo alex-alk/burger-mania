@@ -6,10 +6,11 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiServiceService {
+export class ApiCalls {
 
   constructor(private httpClient:HttpClient) { }
-  
+
+
   get(path: String): Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/' + path).pipe(
         map((result:any)=>{

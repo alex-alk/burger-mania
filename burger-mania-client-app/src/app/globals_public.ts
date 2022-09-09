@@ -1,4 +1,4 @@
-export class Globals{
+export class GlobalsPublic{
   apiURL  : string;
   usersURL : string;
   constructor(){

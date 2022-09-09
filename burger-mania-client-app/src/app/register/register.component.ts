@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Globals } from '../globals';
 import { FormControl, FormGroup } from '@angular/forms';
+import { defer, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,8 @@ export class RegisterComponent implements OnInit {
   globals: Globals;
   messagel: string = "";
   messager: string = "";
+  pendingApiCall: boolean = false;
+  pendingApiCalls: boolean = true;
   
   newUserForm = new FormGroup({
     username: new FormControl(''),
@@ -23,10 +26,22 @@ export class RegisterComponent implements OnInit {
     phone: new FormControl(''),
   });
 
-  @Input() actions = {
-    postSignup: (newUser: any) => new Promise((resolve, reject) => {
-      resolve({});
-  })};
+  observable =  () => { 
+    return defer(() =>new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({});
+      }, 300);
+    }))
+    ;}
+
+  actionz: any = {
+    postSignup: this.observable
+  };
+  actions: any = {
+    postSignup: this.observable
+  };
+
+
   constructor( private http: HttpClient, private router: Router) { 
     this.globals = new Globals();
   }
@@ -35,7 +50,10 @@ export class RegisterComponent implements OnInit {
   }
   
   onClickSignup(){
-    this.actions.postSignup(this.newUserForm.value);
+    this.pendingApiCall = true;
+    this.actions.postSignup(this.newUserForm.value).subscribe(() => {
+      this.pendingApiCall = false;
+    });
     // if(!(this.newUser.username &&
     //    this.newUser.password &&
     //    this.newUser.verifyPassword &&

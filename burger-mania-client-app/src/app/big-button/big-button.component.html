@@ -1,1 +1,6 @@
-<button>{{label}}</button>
+<button [disabled]="disabled">
+    <div *ngIf="displaySpinner" class="spinner-border spinner-border-sm mr-sm-1 align-baseline">
+        <span class="sr-only">Loading...</span>
+      </div>
+    {{label}}
+</button>
