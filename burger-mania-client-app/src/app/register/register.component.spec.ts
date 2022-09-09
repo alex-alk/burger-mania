@@ -2,7 +2,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { defer, of } from 'rxjs';
+import { defer, Observable, of } from 'rxjs';
 import { BigButtonComponent } from '../big-button/big-button.component';
 import { GroupBoxComponent } from '../group-box/group-box.component';
 import { HeaderTitleComponent } from '../headertitle/header-title.component';
@@ -79,7 +79,7 @@ describe('RegisterComponent', () => {
     verifyPassword: HTMLInputElement,
     phoneNumberInput: HTMLInputElement;
 
-    const setupForSubmit = (input: {}) => {
+    const setupForSubmit = () => {
       //const rendered = render(<UserSignupPage {...input} />);
 
       usernameInput = element.querySelector('input[name=username]')!;
@@ -104,11 +104,26 @@ describe('RegisterComponent', () => {
       //return rendered;
     };
 
+    const mockAsync = () => {
+      return defer(() => {
+        return new Promise((resolve, reject) => {resolve({})});
+      });
+    };
+
     const mockAsyncDelayed = () => {
-      defer(() => {
+      return defer(() => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             resolve({});
+          }, 300);
+        });
+      });
+    };
+    const mockAsyncDelayedError = () => {
+      return defer(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject({});
           }, 300);
         });
       });
@@ -145,35 +160,28 @@ describe('RegisterComponent', () => {
       fixture.detectChanges();
       expect(verifyPassword.value).toEqual("my-password");
     });
-    xit("sets the phone number value into form object", () => {
+    it("sets the phone number value into form object", () => {
       const phoneNumberInput: HTMLInputElement = element.querySelector('input[name=phoneNumber]')!;
       phoneNumberInput.value = 'my-phone'
       phoneNumberInput?.dispatchEvent(new Event('input'));
       fixture.detectChanges();
       expect(phoneNumberInput.value).toEqual("my-phone");
     });
-    xit("calls postSignup when fields are valid and the actions are provided in @Input", () => {
-      const actions = {
-        postSignup: 
-          () => new Promise((resolve, reject) => {
-            resolve({})
-          })
-      };
-      setupForSubmit({ actions });
-      spyOn(component.actionz, 'postSignup');
+    it("calls postSignup when fields are valid and the actions are provided in @Input", () => {
+      component.actions = {postSignup: mockAsync};
+      setupForSubmit();
+      spyOn(component.actions, 'postSignup').and.callThrough();
 
       button.click();
-      expect(component.actionz.postSignup).toHaveBeenCalledTimes(1);
+      expect(component.actions.postSignup).toHaveBeenCalledTimes(1);
     });
-    xit("does not throw exception when clicking the button when actions not provided @Input", () => {
-      setupForSubmit({});
+    it("does not throw exception when clicking the button when actions not provided @Input", () => {
+      setupForSubmit();
       expect(() => button.click()).not.toThrow();
     });
-    xit("calls post with user body when the fields are valid", () => {
-      const actions = {
-        postSignup: of(),
-      };
-      setupForSubmit({  });
+    it("calls post with user body when the fields are valid", () => {
+      component.actions = {postSignup: mockAsync};
+      setupForSubmit();
 
       usernameInput.value = 'abc';
       usernameInput?.dispatchEvent(new Event('input'));
@@ -186,26 +194,22 @@ describe('RegisterComponent', () => {
         verifyPassword: "abc",
         phone: "abc"
       };
-      spyOn(component.actionz, 'postSignup');
+      spyOn(component.actions, 'postSignup').and.callThrough();
       button.click();
-      expect(component.actionz.postSignup).toHaveBeenCalledWith(expectedUserObject);
+      expect(component.actions.postSignup).toHaveBeenCalledWith(expectedUserObject);
     });
     it("does not allow user to click the Sign Up button when there is an ongoing api call", () => {
-      const actions = {
-        postSignup: mockAsyncDelayed(),
-      };
-      setupForSubmit({ actions });
-      //spyOn(component.actions, 'postSignup');
+      component.actions = {postSignup: mockAsyncDelayed};
+      setupForSubmit();
+      spyOn(component.actions, 'postSignup').and.callThrough()
       button.click();
       fixture.detectChanges();
       button.click();
       expect(component.actions.postSignup).toHaveBeenCalledTimes(1);
     });
     it("displays spinner when there is an ongoing api call", () => {
-      const actions = {
-        postSignup: mockAsyncDelayed(),
-      };
-      setupForSubmit({ actions });
+      component.actions = {postSignup: mockAsyncDelayed};
+      setupForSubmit();
       button.click();
       fixture.detectChanges();
 
@@ -213,19 +217,26 @@ describe('RegisterComponent', () => {
       expect(spinner).toBeTruthy();
     });
     it("hides spinner after api call finishes successfully", () => {
-      const actions = {
-        postSignup: mockAsyncDelayed()
-      };
-      setupForSubmit({});
-
-      component.actions = actions
+      component.actions = {postSignup: mockAsync};
+      setupForSubmit();
 
       waitForAsync(() => {
         button.click();
       })
 
       const spinner = element.querySelector('.sr-only')!;
-      console.log(spinner)
+      expect(spinner).not.toBeTruthy();
+    });
+    it("hides spinner after api call finishes with error", () => {
+      component.actions = {postSignup: mockAsyncDelayedError};
+      setupForSubmit();
+
+      waitForAsync(() => {
+        button.click();
+      })
+      fixture.detectChanges();
+      
+      const spinner = element.querySelector('.sr-only')!;
       expect(spinner).not.toBeTruthy();
     });
   });

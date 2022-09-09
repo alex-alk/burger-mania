@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Globals } from '../globals';
 import { FormControl, FormGroup } from '@angular/forms';
-import { defer, Observable, of } from 'rxjs';
+import { defer, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -34,9 +34,6 @@ export class RegisterComponent implements OnInit {
     }))
     ;}
 
-  actionz: any = {
-    postSignup: this.observable
-  };
   actions: any = {
     postSignup: this.observable
   };
@@ -51,9 +48,15 @@ export class RegisterComponent implements OnInit {
   
   onClickSignup(){
     this.pendingApiCall = true;
-    this.actions.postSignup(this.newUserForm.value).subscribe(() => {
-      this.pendingApiCall = false;
-    });
+    this.actions.postSignup(this.newUserForm.value).subscribe(
+      (result: any) => {
+        this.pendingApiCall = false;
+      },
+      (error: any) => {
+        this.pendingApiCall = false;
+      },
+      () => {}
+    );
     // if(!(this.newUser.username &&
     //    this.newUser.password &&
     //    this.newUser.verifyPassword &&
