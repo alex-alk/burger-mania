@@ -1,5 +1,6 @@
 package com.alexandruleonte.burger;
 
+import com.alexandruleonte.burger.error.ApiError;
 import com.alexandruleonte.burger.shared.GenericResponse;
 import com.alexandruleonte.burger.user.User;
 import com.alexandruleonte.burger.user.UserRepository;
@@ -159,6 +160,20 @@ public class UserControllerTest {
         user.setPassword("12345678");
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void postUser_whenUserIsInvalid_receiveApiError() {
+        User user = new User();
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        assertThat(response.getBody().getUrl()).isEqualTo(API_USERS);
+    }
+
+    @Test
+    public void postUser_whenUserIsInvalid_receiveApiErrorWithValidationErrors() {
+        User user = new User();
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        assertThat(response.getBody().getValidationErrors().size()).isEqualTo(6);
     }
 
     public <T> ResponseEntity<T> postSignup(Object request, Class<T> response) {
