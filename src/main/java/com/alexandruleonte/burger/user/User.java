@@ -1,7 +1,9 @@
 package com.alexandruleonte.burger.user;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "\"user\"")
@@ -9,34 +11,38 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@NotNull
+
+	@NotBlank
 	private String username;
-	@NotNull
+
+	@NotBlank
+	@Size(min=8)
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9]).*$")
 	private String password;
-	@NotNull
-	private String fullname;
-	@NotNull
-	private String street;
-	@NotNull
-	private String city;
-	@NotNull
-	private String state;
-	@NotNull
-	private String zip;
-	@NotNull
+
+	@NotBlank
+	@Size(max=20)
+	private String firstName;
+
+	@NotBlank
+	@Size(max=20)
+	private String lastName;
+
+	@NotBlank
+	private String address;
+
+	@NotBlank
 	private String phone;
 
 	public User() {}
 
-	public User(Long id, String username, String password, String fullname, String street, String city, String state, String zip, String phone) {
+	public User(Long id, String username, String password, String firstName, String lastName, String address, String phone) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.fullname = fullname;
-		this.street = street;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
 		this.phone = phone;
 	}
 
@@ -64,44 +70,28 @@ public class User {
 		this.password = password;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getCity() {
-		return city;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getPhone() {
