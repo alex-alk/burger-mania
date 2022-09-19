@@ -12,20 +12,18 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
+	@NotBlank(message = "{burger.constraints.username.NotBlank.message}")
 	private String username;
 
-	@NotBlank
-	@Size(min=8)
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9]).*$")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9]).*$", message = "{burger.constraints.password.Pattern.message}")
+	@Size(min=8, max = 100)
 	private String password;
 
-	@NotBlank
-	@Size(max=20)
+	@NotBlank(message = "{burger.constraints.firstName.NotBlank.message}")
+	@Size(max=20, message = "{burger.constraints.firstName.Size.message}")
 	private String firstName;
 
 	@NotBlank
-	@Size(max=20)
 	private String lastName;
 
 	@NotBlank

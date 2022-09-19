@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -121,16 +122,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void postUser_whenUserHasLastNameExceedsTheLengthLimit_receiveBadRequest() {
-        User user = createValidUser();
-        String valueOf20Chars = IntStream.rangeClosed(1, 21).mapToObj(x -> "a")
-                .collect(Collectors.joining());
-        user.setLastName(valueOf20Chars);
-        ResponseEntity<Object> response = postSignup(user, Object.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
     public void postUser_whenUserHasPasswordWithLessThanRequired_receiveBadRequest() {
         User user = createValidUser();
         user.setPassword("passS1");
@@ -173,7 +164,82 @@ public class UserControllerTest {
     public void postUser_whenUserIsInvalid_receiveApiErrorWithValidationErrors() {
         User user = new User();
         ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
-        assertThat(response.getBody().getValidationErrors().size()).isEqualTo(6);
+        assertThat(response.getBody().getValidationErrors().size()).isEqualTo(5);
+    }
+
+    @Test
+    public void postUser_whenUserHasEmptyUsername_receiveMessageOfRequiredUsername() {
+        User user = createValidUser();
+        user.setUsername("   ");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("username")).isEqualTo("Email address is required");
+    }
+
+    @Test
+    public void postUser_whenUserHasInvalidLengthPassword_receiveMessageOfSizeError() {
+        User user = createValidUser();
+        user.setPassword("Pa4");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("password")).isEqualTo("It must have minimum 8 characters and maximum 100 characters");
+    }
+
+    @Test
+    public void postUser_whenUserHasInvalidPasswordPattern_receiveMessageOfPasswordPatternError() {
+        User user = createValidUser();
+        user.setPassword("password");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("password")).isEqualTo(
+                "Password must have at least one uppercase, one lowercase letter and one number");
+    }
+
+    @Test
+    public void postUser_whenUserHasEmptyFirstName_receiveMessageOfRequiredFirstName() {
+        User user = createValidUser();
+        user.setFirstName("   ");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("firstName")).isEqualTo("First name is required");
+    }
+
+    @Test
+    public void postUser_whenUserHasInvalidLengthFirstName_receiveMessageOfSizeError() {
+        User user = createValidUser();
+        String valueOf20Chars = IntStream.rangeClosed(1, 21).mapToObj(x -> "a")
+                .collect(Collectors.joining());
+        user.setFirstName(valueOf20Chars);
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("firstName")).isEqualTo("It must have maximum 20 characters");
+    }
+
+    @Test
+    public void postUser_whenUserHasEmptyLastName_receiveMessageOfRequiredLastName() {
+        User user = createValidUser();
+        user.setLastName("   ");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("lastName")).isEqualTo("Is required");
+    }
+
+    @Test
+    public void postUser_whenUserHasEmptyAddress_receiveMessageOfRequired() {
+        User user = createValidUser();
+        user.setAddress("   ");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("address")).isEqualTo("Is required");
+    }
+
+    @Test
+    public void postUser_whenUserHasEmptyPhoneNumber_receiveMessageOfRequired() {
+        User user = createValidUser();
+        user.setPhone("   ");
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+        assertThat(validationErrors.get("phone")).isEqualTo("Is required");
     }
 
     public <T> ResponseEntity<T> postSignup(Object request, Class<T> response) {
