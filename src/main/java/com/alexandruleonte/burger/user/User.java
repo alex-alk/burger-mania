@@ -13,6 +13,7 @@ public class User {
 	private Long id;
 
 	@NotBlank(message = "{burger.constraints.username.NotBlank.message}")
+	@UniqueUsername
 	private String username;
 
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9]).*$", message = "{burger.constraints.password.Pattern.message}")
